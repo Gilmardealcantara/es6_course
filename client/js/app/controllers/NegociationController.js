@@ -7,14 +7,16 @@ class NegociationController {
     }
 
     add(evt){
-        evt.preventDefault();        
+        evt.preventDefault();
+        let date = DateHelper.text2Date(this._inputDate.value);        
         let negociation = new Negociation(
-            new Date(...this._inputDate.value.split('-').map((v, i) =>  v - i%2)), 
+            date, 
             this._inputQnt, 
             this._inputValue
         );
 
         console.log(negociation);
+        console.log(DateHelper.date2Text(date));
 
     } 
 }
