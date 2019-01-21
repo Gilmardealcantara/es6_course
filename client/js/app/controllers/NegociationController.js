@@ -7,6 +7,10 @@ class NegociationController {
         this._negociationsList = new NegocitationsList(); 
         this._negociationsView = new NegociationView($('#negociationsView'));
         this._negociationsView.update(this._negociationsList);
+
+        this._message = new Message();
+        this._messageView = new MessageView($('#messageView'));
+        this._messageView.update(this._message);
     }
 
     _formClear(){
@@ -28,6 +32,9 @@ class NegociationController {
         evt.preventDefault();
         this._negociationsList.add(this._negociationFactory());
         this._negociationsView.update(this._negociationsList);
+
+        this._message.text = "Add Negociation - Success !!! ";
+        this._messageView.update(this._message);
         this._formClear();
     } 
 }
