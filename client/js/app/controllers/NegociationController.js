@@ -5,6 +5,8 @@ class NegociationController {
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
         this._negociationsList = new NegocitationsList(); 
+        this._negociationsView = new NegociationView($('#negociationsView'));
+        this._negociationsView.update(this._negociationsList);
     }
 
     _formClear(){
@@ -25,7 +27,7 @@ class NegociationController {
     add(evt){
         evt.preventDefault();
         this._negociationsList.add(this._negociationFactory());
-        console.log(this._negociationsList.negociations);
+        this._negociationsView.update(this._negociationsList);
         this._formClear();
     } 
 }
