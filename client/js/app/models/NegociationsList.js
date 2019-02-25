@@ -10,4 +10,8 @@ class NegocitationsList {
     get negociations() {
         return [].concat(this._list);
     }
+    
+    removeAll() {
+      this._list = [];
+    }
 }

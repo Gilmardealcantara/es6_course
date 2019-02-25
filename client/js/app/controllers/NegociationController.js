@@ -19,7 +19,14 @@ class NegociationController {
         this._inputValue.value = 0.0;
         this._inputDate.focus();
     }
-    
+
+    clean() {
+      this._negociationsList.removeAll();
+      this._negociationsView.update(this._negociationsList);
+      this._message.text = "Remove all negociations successfully";
+      this._messageView.update(this._message);
+    }
+      
     _negociationFactory(){
         return new Negociation(
             DateHelper.text2Date(this._inputDate.value), 
