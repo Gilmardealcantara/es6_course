@@ -4,7 +4,9 @@ class NegociationController {
         this._inputQnt = $('#quantidade');
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
-        this._negociationsList = new NegocitationsList(); 
+		this._negociationsList = new NegocitationsList( () => {
+			this._negociationsView.update(this._negociationsList);
+		} ); 
         this._negociationsView = new NegociationView($('#negociationsView'));
         this._negociationsView.update(this._negociationsList);
 
@@ -22,7 +24,6 @@ class NegociationController {
 
     clean() {
       this._negociationsList.removeAll();
-      this._negociationsView.update(this._negociationsList);
       this._message.text = "Remove all negociations successfully";
       this._messageView.update(this._message);
     }
@@ -38,7 +39,6 @@ class NegociationController {
     add(evt){
         evt.preventDefault();
         this._negociationsList.add(this._negociationFactory());
-        this._negociationsView.update(this._negociationsList);
 
         this._message.text = "Add Negociation - Success !!! ";
         this._messageView.update(this._message);
