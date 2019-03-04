@@ -4,9 +4,21 @@ class NegociationController {
         this._inputQnt = $('#quantidade');
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
-		this._negociationsList = new NegocitationsList( () => {
-			this._negociationsView.update(this._negociationsList);
-		} ); 
+		
+		let self = this;
+		this._negociationsList = new Proxy(new NegocitationsList(), {
+			get(target, prop, receiver){
+				if(['add', 'removeAll'].includes(prop) && typeof(target[prop]) == typeof(Function)){
+					return function(){
+						console.log(`${prop} intercept`);
+						Reflect.apply(target[prop], target, arguments);
+						self._negociationsView.update(target);
+					}	
+				}
+				return Reflect.get(target, prop, receiver);
+			}
+		});
+
         this._negociationsView = new NegociationView($('#negociationsView'));
         this._negociationsView.update(this._negociationsList);
 
