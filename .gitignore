@@ -1,2 +1,3 @@
 tags
 *.swp
+server/node_modules
