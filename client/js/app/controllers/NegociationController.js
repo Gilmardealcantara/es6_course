@@ -4,27 +4,19 @@ class NegociationController {
         this._inputQnt = $('#quantidade');
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
-		
-		let self = this;
-		this._negociationsList = new Proxy(new NegocitationsList(), {
-			get(target, prop, receiver){
-				if(['add', 'removeAll'].includes(prop) && typeof(target[prop]) == typeof(Function)){
-					return function(){
-						console.log(`${prop} intercept`);
-						Reflect.apply(target[prop], target, arguments);
-						self._negociationsView.update(target);
-					}	
-				}
-				return Reflect.get(target, prop, receiver);
-			}
-		});
+			
+		this._negociationsList = ProxyFactory.create (
+			new NegocitationsList(),
+			['add', 'removeAll'], model =>
+			this._negociationsView.update(model));
 
         this._negociationsView = new NegociationView($('#negociationsView'));
         this._negociationsView.update(this._negociationsList);
 
-        this._message = new Message();
+		this._message = ProxyFactory.create(
+			new Message(), ['text'], model =>
+			this._messageView.update(model));
         this._messageView = new MessageView($('#messageView'));
-        this._messageView.update(this._message);
     }
 
     _formClear(){
@@ -37,7 +29,6 @@ class NegociationController {
     clean() {
       this._negociationsList.removeAll();
       this._message.text = "Remove all negociations successfully";
-      this._messageView.update(this._message);
     }
       
     _negociationFactory(){
@@ -53,7 +44,6 @@ class NegociationController {
         this._negociationsList.add(this._negociationFactory());
 
         this._message.text = "Add Negociation - Success !!! ";
-        this._messageView.update(this._message);
         this._formClear();
     } 
 }
