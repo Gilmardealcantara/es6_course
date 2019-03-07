@@ -5,18 +5,15 @@ class NegociationController {
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
 			
-		this._negociationsList = ProxyFactory.create (
+		this._negociationsList = new Bind (
 			new NegocitationsList(),
-			['add', 'removeAll'], model =>
-			this._negociationsView.update(model));
+			new NegociationView($('#negociationsView')),
+			'add', 'removeAll');
 
-        this._negociationsView = new NegociationView($('#negociationsView'));
-        this._negociationsView.update(this._negociationsList);
-
-		this._message = ProxyFactory.create(
-			new Message(), ['text'], model =>
-			this._messageView.update(model));
-        this._messageView = new MessageView($('#messageView'));
+		this._message = new Bind(
+			new Message(), 
+			new MessageView($('#messageView')),
+			'text');
     }
 
     _formClear(){
