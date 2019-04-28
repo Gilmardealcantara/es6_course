@@ -4,6 +4,7 @@ class NegociationController {
         this._inputQnt = $('#quantidade');
         this._inputDate = $('#data');
         this._inputValue = $('#valor');
+        this._negociationService = new NegociationsService();
 
         this._negociationsList = new Bind(
             new NegocitationsList(),
@@ -38,15 +39,20 @@ class NegociationController {
 
     add(evt) {
         evt.preventDefault();
-        this._negociationsList.add(this._negociationFactory());
-
-        this._message.text = "Add Negociation - Success !!! ";
-        this._formClear();
+        var negociation = this._negociationFactory();
+        this._negociationService.postNegociation(negociation, (error) => {
+            if (!error) {
+                this._negociationsList.add(negociation);
+                this._message.text = "Add Negociation - Success !!! ";
+                this._formClear();
+            } else {
+                this._message.text = error;
+            }
+        })
     }
 
     getDataApi() {
-        let service = new NegociationsService();
-        service.neciationsByWeek((err, negociations) => {
+        this._negociationService.getNeciationsByWeek((err, negociations) => {
             if (err) {
                 this._message.text = 'Error to negociations get.';
             } else {

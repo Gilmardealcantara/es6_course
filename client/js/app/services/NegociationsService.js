@@ -1,5 +1,5 @@
 class NegociationsService {
-    neciationsByWeek(cb) {
+    getNeciationsByWeek(cb) {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/negociacoes/semana');
         xhr.onreadystatechange = () => {
@@ -13,5 +13,29 @@ class NegociationsService {
             }
         };
         xhr.send();
+    }
+
+    postNegociation(negociation, cb) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/negociacoes", true);
+        xhr.setRequestHeader("Content-type", "application/json");
+
+        xhr.onreadystatechange = () => {
+
+            if (xhr.readyState == 4) {
+
+                if (xhr.status == 200) {
+                    cb(null)
+                } else {
+                    cb(`Erro to send negociation: ${xhr.responseText}`);
+                }
+            }
+        }
+
+        xhr.send(JSON.stringify({
+            data: negociation.date,
+            quantidade: negociation.qnt,
+            valor: negociation.value
+        }));
     }
 }
