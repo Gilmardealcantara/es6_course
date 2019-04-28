@@ -45,24 +45,15 @@ class NegociationController {
     }
 
     getDataApi() {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', '/negociacoes/semana');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    console.log("Response Ok");
-                    console.log(JSON.parse(xhr.responseText));
-                    JSON.parse(xhr.responseText)
-                        .map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor))
-                        .forEach(negociation => this._negociationsList.add(negociation));
-                    this._message.text = 'Success in negociations get';
-                } else {
-                    console.log("Erro in server");
-                    this._message.text = 'Error to negociations get.';
-                }
+        let service = new NegociationsService();
+        service.neciationsByWeek((err, negociations) => {
+            if (err) {
+                this._message.text = 'Error to negociations get.';
+            } else {
+                negociations.forEach(negociation => this._negociationsList.add(negociation));
+                this._message.text = 'Success in negociations get';
             }
-        };
-        xhr.send();
+        });
     }
 }
 
