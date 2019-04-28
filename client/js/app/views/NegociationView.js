@@ -1,5 +1,5 @@
-class NegociationView extends View{
-    
+class NegociationView extends View {
+
     template(model) {
         return `
         <table class="table table-hover table-bordered">
