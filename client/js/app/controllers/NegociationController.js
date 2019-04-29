@@ -52,14 +52,20 @@ class NegociationController {
     }
 
     getDataApi() {
-        this._negociationService.getNeciationsByWeek((err, negociations) => {
-            if (err) {
-                this._message.text = 'Error to negociations get.';
-            } else {
-                negociations.forEach(negociation => this._negociationsList.add(negociation));
-                this._message.text = 'Success in negociations get';
-            }
-        });
+        this._negociationService.getWeek().then(negociations => {
+            negociations.forEach(negociation => this._negociationsList.add(negociation));
+            this._message.text = 'Success in negociations get';
+        }).catch(error => this._message.text = error)
+
+        this._negociationService.getLastWeek().then(negociations => {
+            negociations.forEach(negociation => this._negociationsList.add(negociation));
+            this._message.text = 'Success in negociations get';
+        }).catch(error => this._message.text = error)
+
+        this._negociationService.getLastLastWeek().then(negociations => {
+            negociations.forEach(negociation => this._negociationsList.add(negociation));
+            this._message.text = 'Success in negociations get';
+        }).catch(error => this._message.text = error)
     }
 }
 

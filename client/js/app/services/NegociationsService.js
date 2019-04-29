@@ -1,4 +1,57 @@
 class NegociationsService {
+    getWeek() {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/negociacoes/semana');
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+                    } else {
+                        reject('Error to negociations get')
+                    }
+                }
+            };
+            xhr.send();
+
+        });
+    }
+
+    getLastWeek() {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/negociacoes/anterior');
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+                    } else {
+                        reject('Error to negociations get')
+                    }
+                }
+            };
+            xhr.send();
+
+        });
+    }
+
+    getLastLastWeek() {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/negociacoes/retrasada');
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+                    } else {
+                        reject('Error to negociations get')
+                    }
+                }
+            };
+            xhr.send();
+
+        });
+    }
     getNeciationsByWeek(cb) {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/negociacoes/semana');
