@@ -8,7 +8,7 @@ class NegociationsService {
                     if (xhr.status == 200) {
                         resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
                     } else {
-                        reject('Error to negociations get')
+                        reject('Error to week negociations get')
                     }
                 }
             };
@@ -26,7 +26,7 @@ class NegociationsService {
                     if (xhr.status == 200) {
                         resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
                     } else {
-                        reject('Error to negociations get')
+                        reject('Error to last week negociations get')
                     }
                 }
             };
@@ -44,7 +44,7 @@ class NegociationsService {
                     if (xhr.status == 200) {
                         resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
                     } else {
-                        reject('Error to negociations get')
+                        reject('Error to last last negociations get')
                     }
                 }
             };
