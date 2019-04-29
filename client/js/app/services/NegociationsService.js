@@ -1,55 +1,29 @@
 class NegociationsService {
+    constructor() {
+        this._http = new HttpService();
+    }
+
     getWeek() {
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/negociacoes/semana');
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
-                    } else {
-                        reject('Error to week negociations get')
-                    }
-                }
-            };
-            xhr.send();
-
+            this._http.get('/negociacoes/semana').then(negociations => {
+                resolve(negociations.map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+            }).catch(erro => reject(error));
         });
     }
 
     getLastWeek() {
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/negociacoes/anterior');
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
-                    } else {
-                        reject('Error to last week negociations get')
-                    }
-                }
-            };
-            xhr.send();
-
+            this._http.get('/negociacoes/anterior').then(negociations => {
+                resolve(negociations.map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+            }).catch(erro => reject(error));
         });
     }
 
     getLastLastWeek() {
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/negociacoes/retrasada');
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        resolve(JSON.parse(xhr.responseText).map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
-                    } else {
-                        reject('Error to last last negociations get')
-                    }
-                }
-            };
-            xhr.send();
-
+            this._http.get('/negociacoes/retrasada').then(negociations => {
+                resolve(negociations.map((obj) => new Negociation(new Date(obj.data), obj.quantidade, obj.valor)));
+            }).catch(erro => reject(error));
         });
     }
     getNeciationsByWeek(cb) {
@@ -69,26 +43,11 @@ class NegociationsService {
     }
 
     postNegociation(negociation, cb) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/negociacoes", true);
-        xhr.setRequestHeader("Content-type", "application/json");
-
-        xhr.onreadystatechange = () => {
-
-            if (xhr.readyState == 4) {
-
-                if (xhr.status == 200) {
-                    cb(null)
-                } else {
-                    cb(`Erro to send negociation: ${xhr.responseText}`);
-                }
-            }
-        }
-
-        xhr.send(JSON.stringify({
+        this._http.post('/negociacoes', {
             data: negociation.date,
             quantidade: negociation.qnt,
             valor: negociation.value
-        }));
+        }).then(() => cb(null))
+            .catch((error) => cb(error));
     }
 }
