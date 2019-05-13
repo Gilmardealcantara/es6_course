@@ -47,7 +47,7 @@ const ConnectionFactory = (function () {
             stores.forEach(store => {
                 if (connection.objectStoreNames.contains(store))
                     connection.deleteObjectStore(store);
-                connection.createObjectStore(store, { autoIncremente: true });
+                connection.createObjectStore(store, { autoIncrement: true });
             });
         }
 
