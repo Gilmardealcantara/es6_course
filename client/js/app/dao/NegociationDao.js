@@ -1,7 +1,7 @@
 class NegociationDao {
     constructor(connection) {
         this._connection = connection;
-        this._store = 'negociations';
+        this._store = ' ';
     }
 
     add(negociation) {

@@ -32,8 +32,8 @@ class NegociationController {
     _negociationFactory() {
         return new Negociation(
             DateHelper.text2Date(this._inputDate.value),
-            this._inputQnt.value,
-            this._inputValue.value
+            parseInt(this._inputQnt.value),
+            parseFloat(this._inputValue.value)
         );
     }
 
@@ -42,9 +42,17 @@ class NegociationController {
         var negociation = this._negociationFactory();
         this._negociationService.postNegociation(negociation, (error) => {
             if (!error) {
-                this._negociationsList.add(negociation);
-                this._message.text = "Add Negociation - Success !!! ";
-                this._formClear();
+                ConnectionFactory.getConnection()
+                    .then(connection => {
+                        new NegociationDao(connection)
+                            .add(negociation)
+                            .then(() => {
+                                this._negociationsList.add(negociation);
+                                this._message.text = "Add Negociation - Success !!! ";
+                                this._formClear();
+                            })
+                    }).catch(error => this._message.text = error)
+
             } else {
                 this._message.text = error;
             }
